@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <title>Vị Thần Của Những Quyết Định — Sách Tương Tác 3D & Lời Sấm Định Mệnh</title>
+  <meta name="description" content="Trải nghiệm đọc sách 3D thực tế mô phỏng chân thực và khám phá ngẫu nhiên những thông điệp chỉ dẫn từ cuốn sách Vị Thần Của Những Quyết Định.">
+  <meta name="theme-color" content="#150f0c">
+
+  <!-- Google Fonts: Chuẩn Typography hỗ trợ 100% Tiếng Việt có dấu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Thư viện CDN chuẩn -->
+  <!-- 1. StPageFlip (Lật trang thực tế 3D) -->
+  <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+  <!-- 2. GSAP (Chuyển động & Hoạt họa cao cấp) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- 3. Howler.js (Âm thanh tương tác) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+  <!-- 4. html2canvas (Xuất thẻ trích dẫn) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <!-- 5. Canvas Confetti (Hiệu ứng ánh vàng lấp lánh) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/book.css">
+</head>
+<body>
+
+  <!-- Hiệu ứng không gian: Ánh nến lung linh & hạt bụi ma thuật -->
+  <div class="ambient-lighting" id="ambient-lighting"></div>
+  <div class="magic-particles" id="magic-particles"></div>
+
+  <!-- Header: Thương hiệu & Nút hành động chính -->
+  <header class="site-header">
+    <div class="header-brand">
+      <svg class="brand-symbol" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        <polygon points="12,2 14.5,9.5 22,12 14.5,14.5 12,22 9.5,14.5 2,12 9.5,9.5"/>
+      </svg>
+      <div class="brand-title">Vị Thần Của Những Quyết Định</div>
+    </div>
+
+    <div class="header-actions">
+      <button class="action-btn btn-oracle" id="btn-trigger-oracle" title="Rút một lời sấm ngẫu nhiên">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+        <span>Thỉnh Cầu Vị Thần</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Bàn đọc sách & Sân khấu 3D -->
+  <main class="main-stage">
+    <div class="book-viewport">
+      <!-- Nút lật trang trái/phải -->
+      <button class="nav-arrow prev-btn" id="prev-page-btn" aria-label="Trang trước" title="Lật về trang trước (←)">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+
+      <!-- Khối chứa sách của StPageFlip -->
+      <div id="book"></div>
+
+      <button class="nav-arrow next-btn" id="next-page-btn" aria-label="Trang sau" title="Lật sang trang sau (→)">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer / Dock điều khiển trải nghiệm đọc -->
+  <footer class="site-footer">
+    <div class="dock-controls">
+      <button class="dock-btn" id="toggle-sound-btn" title="Bật/Tắt âm thanh" aria-label="Bật tắt âm thanh">
+        <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+      </button>
+
+      <div class="page-indicator" id="page-indicator">
+        <span id="current-page-num">Bìa trước</span> / <span id="total-page-num">--</span>
+      </div>
+
+      <button class="dock-btn" id="bookmark-btn" title="Đánh dấu trang hiện tại" aria-label="Kẹp ruy-băng trang này">
+        <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+      </button>
+
+      <button class="dock-btn" id="fullscreen-btn" title="Toàn màn hình" aria-label="Chế độ toàn màn hình">
+        <svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+      </button>
+    </div>
+
+    <div class="reading-hint">
+      Mẹo: Dùng chuột kéo góc trang giấy để lật • Nhấn phím mũi tên ← / → để chuyển trang • Phím Space để Thỉnh Cầu
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       MODAL NGHI THỨC: THỈNH CẦU VỊ THẦN (ORACLE RITUAL)
+       ========================================================================== -->
+  <div class="oracle-modal" id="oracle-modal">
+    <button class="oracle-close-btn" id="close-oracle-btn" aria-label="Đóng">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+
+    <div class="oracle-card">
+      <div class="oracle-seal-btn" id="oracle-seal-btn" title="Chạm để kết nối với Vị Thần">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" stroke="currentColor" stroke-width="2.5" fill="none"/>
+          <path d="M50 15 L58 42 L85 50 L58 58 L50 85 L42 58 L15 50 L42 42 Z"/>
+          <circle cx="50" cy="50" r="10" fill="#2b0a08"/>
+        </svg>
+      </div>
+
+      <div class="oracle-timer" id="oracle-countdown" style="display: none;">3</div>
+      <h2 class="oracle-step-title" id="oracle-step-title">Khởi Tâm Thỉnh Cầu</h2>
+      <p class="oracle-step-desc" id="oracle-step-desc">
+        Hãy nhắm mắt lại, hít một hơi sâu và tập trung tâm trí vào câu hỏi hoặc quyết định bạn đang băn khoăn. Khi đã sẵn sàng, hãy chạm vào Ấn Triện Định Mệnh.
+      </p>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL XEM & XUẤT THẺ TRÍCH DẪN (QUOTE CARD EXPORT)
+       ========================================================================== -->
+  <div class="quote-modal" id="quote-modal">
+    <div class="quote-card-wrapper">
+      <!-- Vùng đối tượng kết xuất ảnh qua html2canvas -->
+      <div class="quote-render-target" id="quote-render-target">
+        <!-- Được điền tự động bằng Javascript -->
+      </div>
+
+      <div class="quote-modal-actions">
+        <button class="action-btn btn-oracle" id="download-quote-btn">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
+          <span>Tải Về Ảnh Thẻ Bài (PNG)</span>
+        </button>
+        <button class="action-btn" id="close-quote-btn">
+          <span>Đóng Lại</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast thông báo nhỏ góc màn hình -->
+  <div class="toast-notice" id="toast-notice">✦ Thông báo</div>
+
+  <!-- Scripts ứng dụng -->
+  <script src="js/book-content.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/flipbook.js"></script>
+  <script src="js/oracle.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+/* ==========================================================================
+   THIẾT KẾ TRANG SÁCH & HIỆU ỨNG VẬT LÝ 3D (STPAGEFLIP & BOOK AESTHETICS)
+   ========================================================================== */
+
+/* Container bọc ngoài sách */
+#book {
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+  transition: transform 0.5s ease;
+}
+
+/* Định dạng cơ bản từng trang sách của StPageFlip */
+.page {
+  background-color: var(--paper-cream);
+  color: var(--ink-dark);
+  overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.05);
+  font-family: var(--font-serif-body);
+}
+
+/* ==========================================================================
+   BÌA CỨNG (HARDCOVER FRONT & BACK)
+   ========================================================================== */
+.page-cover {
+  background: radial-gradient(circle at 50% 40%, #2f1d16 0%, #170d09 100%) !important;
+  color: var(--gold-light) !important;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.9), 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2.2rem;
+  border: 4px solid #3d261c;
+}
+
+/* Khung viền mạ vàng trên bìa sách */
+.cover-gold-border {
+  position: absolute;
+  inset: 18px;
+  border: 2px solid var(--gold-primary);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.cover-gold-border::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px dashed rgba(212, 175, 55, 0.6);
+}
+
+/* Hoa văn 4 góc bìa */
+.corner-ornament {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--gold-primary);
+}
+.corner-ornament.tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+.corner-ornament.tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+.corner-ornament.bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+.corner-ornament.br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+/* La bàn số phận trên bìa */
+.cover-emblem {
+  width: 140px;
+  height: 140px;
+  margin-bottom: 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-emblem svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--gold-primary);
+  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.7));
+  animation: slowRotate 60s infinite linear;
+}
+
+@keyframes slowRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cover-title {
+  font-family: var(--font-serif-title);
+  font-size: 2.1rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.9));
+  margin-bottom: 1rem;
+}
+
+.cover-subtitle {
+  font-family: var(--font-serif-body);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: rgba(249, 226, 149, 0.8);
+  letter-spacing: 1px;
+  margin-bottom: 3rem;
+}
+
+.cover-author {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-primary);
+  opacity: 0.85;
+}
+
+/* Bìa sau */
+.back-seal {
+  width: 80px;
+  height: 80px;
+  fill: var(--gold-primary);
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+
+.back-quote {
+  font-style: italic;
+  font-size: 1.15rem;
+  color: rgba(249, 226, 149, 0.85);
+  line-height: 1.7;
+  max-width: 80%;
+  margin-bottom: 2rem;
+}
+
+/* ==========================================================================
+   BÌA LÓT & CÁC TRANG BÊN TRONG (INTERIOR PAGES)
+   ========================================================================== */
+.page-inner {
+  height: 100%;
+  padding: 3rem 2.8rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  background: #f7f2e4;
+  background-image: radial-gradient(#d3c6aa 0.5px, transparent 0.5px);
+  background-size: 16px 16px;
+}
+
+/* Đổ bóng gáy sách tạo chiều sâu 3D */
+.page--left .page-inner {
+  box-shadow: inset -25px 0 35px -10px rgba(0, 0, 0, 0.18);
+}
+.page--right .page-inner {
+  box-shadow: inset 25px 0 35px -10px rgba(0, 0, 0, 0.18);
+}
+
+/* Header & Footer trang sách */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-serif-title);
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border-bottom: 1px solid rgba(140, 109, 35, 0.25);
+  padding-bottom: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0.6rem;
+  border-top: 1px solid rgba(140, 109, 35, 0.25);
+  font-family: var(--font-serif-title);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+/* Nội dung văn bản chính */
+.page-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.chapter-title {
+  font-family: var(--font-serif-title);
+  font-size: 1.4rem;
+  color: var(--ink-accent);
+  margin-bottom: 0.3rem;
+  letter-spacing: 1px;
+}
+
+.chapter-subtitle {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin-bottom: 1.5rem;
+}
+
+.page-paragraph {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--ink-dark);
+  text-align: justify;
+  margin-bottom: 1.1rem;
+}
+
+/* Chữ hoa nghệ thuật đầu chương (Drop Cap) */
+.drop-cap {
+  float: left;
+  font-family: var(--font-serif-title);
+  font-size: 3.5rem;
+  line-height: 0.8;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-bottom: 2px;
+  color: var(--ink-accent);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   MỤC LỤC TƯƠNG TÁC (TABLE OF CONTENTS)
+   ========================================================================== */
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-top: 1rem;
+}
+
+.toc-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  cursor: pointer;
+  padding: 0.3rem 0;
+  border-bottom: 1px dotted #c4b59b;
+  transition: color 0.2s ease;
+}
+
+.toc-item:hover {
+  color: var(--ink-accent);
+}
+
+.toc-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.toc-page {
+  font-family: var(--font-serif-title);
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+
+/* ==========================================================================
+   TRANG SẤM TRUYỀN QUYẾT ĐỊNH (ORACLE DECISION PAGE)
+   ========================================================================== */
+.oracle-page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.oracle-rune-symbol {
+  font-size: 3rem;
+  color: var(--ink-accent);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(120, 32, 26, 0.3);
+}
+
+.oracle-verdict {
+  font-family: var(--font-serif-title);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--ink-accent);
+  letter-spacing: 1.5px;
+  line-height: 1.35;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+  border-top: 1px solid rgba(120, 32, 26, 0.4);
+  border-bottom: 1px solid rgba(120, 32, 26, 0.4);
+  padding: 0.6rem 0;
+  width: 100%;
+}
+
+.oracle-summary {
+  font-size: 1.18rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: #1a1614;
+  margin-bottom: 1.2rem;
+}
+
+.oracle-reflection {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink-muted);
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.oracle-action-box {
+  background: rgba(120, 32, 26, 0.06);
+  border-left: 3px solid var(--ink-accent);
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  color: var(--ink-dark);
+  text-align: left;
+  border-radius: 0 4px 4px 0;
+  width: 100%;
+}
+
+.oracle-action-box strong {
+  color: var(--ink-accent);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+/* Nút xuất ảnh thẻ bài ngay trên trang */
+.oracle-page-btn {
+  margin-top: 1.2rem;
+  background: var(--ink-accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.25s ease;
+}
+
+.oracle-page-btn:hover {
+  background: #992820;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(120, 32, 26, 0.4);
+}
+
+.oracle-page-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+}
