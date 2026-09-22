@@ -1,6 +1,6 @@
 /**
  * Điều khiển và khởi tạo StPageFlip (page-flip)
- * Quản lý lật trang vật lý 3D, sự kiện âm thanh và đồng bộ giao diện
+ * Quản lý lật trang vật lý 3D chân thực, điều hướng mũi tên và đồng bộ thanh dock
  */
 
 class BookController {
@@ -9,6 +9,8 @@ class BookController {
     this.bookEl = document.getElementById("book");
     this.currentPageEl = document.getElementById("current-page-num");
     this.totalPagesEl = document.getElementById("total-page-num");
+    this.prevBtn = document.getElementById("prev-page-btn");
+    this.nextBtn = document.getElementById("next-page-btn");
     this.init();
   }
 
@@ -18,29 +20,33 @@ class BookController {
       return;
     }
 
-    // Tính toán kích thước trang phù hợp và thoáng đãng với màn hình
+    // Tính toán kích thước trang thoáng đãng, tuyệt đối không chạm vào dock điều khiển bên dưới
     const isMobile = window.innerWidth <= 768;
-    const availHeight = window.innerHeight - 150;
-    const availWidth = isMobile ? window.innerWidth - 30 : (window.innerWidth - 120) / 2;
+    const headerFooterSpace = isMobile ? 140 : 180;
+    const availHeight = window.innerHeight - headerFooterSpace;
+    const availWidth = isMobile ? window.innerWidth - 30 : (window.innerWidth - 140) / 2;
     
-    const pageHeight = isMobile ? Math.min(availHeight, 560) : Math.min(Math.max(availHeight, 580), 650);
-    const pageWidth = isMobile ? Math.min(availWidth, 380) : Math.min(Math.max(Math.round(pageHeight / 1.42), 420), 480);
+    // Giới hạn chiều cao an toàn để không bao giờ đè vào thanh Footer bên dưới
+    const maxH = isMobile ? 500 : 580;
+    const minH = isMobile ? 360 : 420;
+    const pageHeight = Math.max(Math.min(availHeight, maxH), minH);
+    const pageWidth = isMobile ? Math.min(availWidth, 360) : Math.min(Math.round(pageHeight / 1.42), Math.floor(availWidth));
 
     this.pageFlip = new St.PageFlip(this.bookEl, {
       width: pageWidth,
       height: pageHeight,
       size: "fixed",
-      minWidth: 300,
-      maxWidth: 500,
-      minHeight: 480,
-      maxHeight: 700,
+      minWidth: 280,
+      maxWidth: 480,
+      minHeight: 360,
+      maxHeight: 650,
       maxShadowOpacity: 0.5,
       showCover: true,
       mobileScrollSupport: false,
       usePortrait: isMobile,
       startPage: 0,
       drawShadow: true,
-      flippingTime: 850
+      flippingTime: 800
     });
 
     // Tải danh sách các trang đã được render trong DOM
@@ -49,14 +55,16 @@ class BookController {
     // Lắng nghe sự kiện lật trang
     this.pageFlip.on("flip", (e) => {
       this.updatePageIndicator(e.data);
-      // Lưu lại trang đang đọc dở
       localStorage.setItem("god_of_decisions_last_page", e.data);
     });
 
-    // Cập nhật tổng số trang
+    // Cập nhật tổng số trang và trạng thái mũi tên
     setTimeout(() => {
-      if (this.totalPagesEl && this.pageFlip) {
-        this.totalPagesEl.textContent = this.pageFlip.getPageCount();
+      if (this.pageFlip) {
+        const total = this.pageFlip.getPageCount();
+        if (this.totalPagesEl) {
+          this.totalPagesEl.textContent = `${total - 1}`;
+        }
         this.updatePageIndicator(this.pageFlip.getCurrentPageIndex());
       }
     }, 200);
@@ -74,7 +82,6 @@ class BookController {
     const shouldBePortrait = isMobile ? "portrait" : "landscape";
     
     if (currentMode !== shouldBePortrait) {
-      // Cho phép StPageFlip tự động thích ứng chế độ hiển thị
       this.pageFlip.update();
     }
   }
@@ -107,12 +114,32 @@ class BookController {
 
   updatePageIndicator(pageIndex) {
     if (!this.currentPageEl) return;
+    const total = this.getTotalPages();
+
+    // Ẩn nút mũi tên nếu đang ở bìa đầu hoặc bìa cuối
+    if (this.prevBtn) {
+      this.prevBtn.style.opacity = pageIndex === 0 ? "0" : "1";
+      this.prevBtn.style.pointerEvents = pageIndex === 0 ? "none" : "auto";
+    }
+    if (this.nextBtn) {
+      this.nextBtn.style.opacity = pageIndex >= total - 1 ? "0" : "1";
+      this.nextBtn.style.pointerEvents = pageIndex >= total - 1 ? "none" : "auto";
+    }
+
     if (pageIndex === 0) {
       this.currentPageEl.textContent = "Bìa trước";
-    } else if (pageIndex >= this.getTotalPages() - 1) {
+    } else if (pageIndex >= total - 1) {
       this.currentPageEl.textContent = "Bìa sau";
     } else {
-      this.currentPageEl.textContent = `Trang ${pageIndex}`;
+      const isPortrait = this.pageFlip && this.pageFlip.getOrientation() === "portrait";
+      if (isPortrait || pageIndex + 1 >= total - 1) {
+        this.currentPageEl.textContent = `Trang ${pageIndex}`;
+      } else {
+        this.currentPageEl.textContent = `Trang ${pageIndex} - ${pageIndex + 1}`;
+      }
+    }
+    if (this.totalPagesEl) {
+      this.totalPagesEl.textContent = `${total - 1}`;
     }
   }
 }
