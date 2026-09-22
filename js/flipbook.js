@@ -18,19 +18,22 @@ class BookController {
       return;
     }
 
-    // Tính toán kích thước phù hợp với màn hình
+    // Tính toán kích thước trang phù hợp và thoáng đãng với màn hình
     const isMobile = window.innerWidth <= 768;
-    const pageWidth = isMobile ? Math.min(window.innerWidth - 30, 360) : 420;
-    const pageHeight = isMobile ? Math.min(window.innerHeight - 180, 540) : 590;
+    const availHeight = window.innerHeight - 150;
+    const availWidth = isMobile ? window.innerWidth - 30 : (window.innerWidth - 120) / 2;
+    
+    const pageHeight = isMobile ? Math.min(availHeight, 560) : Math.min(Math.max(availHeight, 580), 650);
+    const pageWidth = isMobile ? Math.min(availWidth, 380) : Math.min(Math.max(Math.round(pageHeight / 1.42), 420), 480);
 
     this.pageFlip = new St.PageFlip(this.bookEl, {
       width: pageWidth,
       height: pageHeight,
       size: "fixed",
       minWidth: 300,
-      maxWidth: 480,
-      minHeight: 450,
-      maxHeight: 650,
+      maxWidth: 500,
+      minHeight: 480,
+      maxHeight: 700,
       maxShadowOpacity: 0.5,
       showCover: true,
       mobileScrollSupport: false,
@@ -45,9 +48,6 @@ class BookController {
 
     // Lắng nghe sự kiện lật trang
     this.pageFlip.on("flip", (e) => {
-      if (window.soundEngine) {
-        window.soundEngine.playPageFlip(1);
-      }
       this.updatePageIndicator(e.data);
       // Lưu lại trang đang đọc dở
       localStorage.setItem("god_of_decisions_last_page", e.data);

@@ -42,11 +42,11 @@ function renderBookPages() {
 
       <div class="cover-emblem">
         <svg viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="46" stroke="#d4af37" stroke-width="2" fill="none" opacity="0.6"/>
-          <circle cx="50" cy="50" r="41" stroke="#d4af37" stroke-width="1" stroke-dasharray="2,3" fill="none"/>
-          <polygon points="50,8 57,43 92,50 57,57 50,92 43,57 8,50 43,43" fill="#d4af37"/>
-          <polygon points="50,22 54,46 78,50 54,54 50,78 46,54 22,50 46,46" fill="#f9e295" opacity="0.8"/>
-          <circle cx="50" cy="50" r="6" fill="#78201a" stroke="#d4af37" stroke-width="1.5"/>
+          <circle cx="50" cy="50" r="46" stroke="#8ec5fc" stroke-width="2" fill="none" opacity="0.6"/>
+          <circle cx="50" cy="50" r="41" stroke="#8ec5fc" stroke-width="1" stroke-dasharray="2,3" fill="none"/>
+          <polygon points="50,8 57,43 92,50 57,57 50,92 43,57 8,50 43,43" fill="#8ec5fc"/>
+          <polygon points="50,22 54,46 78,50 54,54 50,78 46,54 22,50 46,46" fill="#e3f2fd" opacity="0.9"/>
+          <circle cx="50" cy="50" r="6" fill="#1976d2" stroke="#8ec5fc" stroke-width="1.5"/>
         </svg>
       </div>
 
@@ -130,7 +130,7 @@ function renderBookPages() {
               <span class="toc-page">Trang 07</span>
             </li>
             <li class="toc-item" onclick="window.bookController.flipTo(8)">
-              <span class="toc-title">✦ NGÂN HÀNG LỜI SẤM ĐỊNH MỆNH ✦</span>
+              <span class="toc-title">✦ CÁC TRANG THÔNG ĐIỆP NGẪU NHIÊN ✦</span>
               <span class="toc-page">Trang 08+</span>
             </li>
           </ul>
@@ -179,8 +179,8 @@ function renderBookPages() {
       <div class="page page-oracle ${pageClass}" data-page-index="${pageCounter}" data-decision-code="${dec.code}">
         <div class="page-inner">
           <div class="page-header">
-            <span>Thông Điệp Số ${dec.code}</span>
-            <span>Lời Khuyên Của Vị Thần</span>
+            <span>Thông Điệp Ngẫu Nhiên #${dec.code.replace("DECISION-", "")}</span>
+            <span>Vị Thần Của Những Quyết Định</span>
           </div>
           <div class="page-body">
             <div class="oracle-page-content">
@@ -238,10 +238,10 @@ function renderBookPages() {
       <div class="corner-ornament br"></div>
 
       <svg class="back-seal" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="45" stroke="#d4af37" stroke-width="2" fill="none"/>
-        <circle cx="50" cy="50" r="38" stroke="#d4af37" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
-        <path d="M50 15 L50 85 M15 50 L85 50 M25 25 L75 75 M25 75 L75 25" stroke="#d4af37" stroke-width="1.5"/>
-        <circle cx="50" cy="50" r="8" fill="#d4af37"/>
+        <circle cx="50" cy="50" r="45" stroke="#8ec5fc" stroke-width="2" fill="none"/>
+        <circle cx="50" cy="50" r="38" stroke="#8ec5fc" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+        <path d="M50 15 L50 85 M15 50 L85 50 M25 25 L75 75 M25 75 L75 25" stroke="#8ec5fc" stroke-width="1.5"/>
+        <circle cx="50" cy="50" r="8" fill="#8ec5fc"/>
       </svg>
 
       <p class="back-quote">
@@ -301,7 +301,7 @@ function setupUserControls() {
     });
   }
 
-  // Nút Thỉnh Cầu Vị Thần trên thanh Header
+  // Nút Thông Điệp Ngẫu Nhiên trên thanh Header
   const oracleTriggerBtn = document.getElementById("btn-trigger-oracle");
   if (oracleTriggerBtn) {
     oracleTriggerBtn.addEventListener("click", () => {
@@ -309,22 +309,15 @@ function setupUserControls() {
     });
   }
 
-  // Bật/tắt âm thanh
-  const soundBtn = document.getElementById("toggle-sound-btn");
-  if (soundBtn) {
-    soundBtn.addEventListener("click", () => {
-      if (window.soundEngine) {
-        const isMuted = window.soundEngine.toggleMute();
-        soundBtn.innerHTML = isMuted
-          ? `<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`
-          : `<svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
-        
-        if (window.oracleController) {
-          window.oracleController.showToast(isMuted ? "Đã tắt âm thanh" : "Đã bật âm thanh lật giấy & ambient");
-        }
-      }
+  // Nút Lật Nhanh Thông Điệp Ngẫu Nhiên trên thanh Dock dưới
+  const randomQuickBtn = document.getElementById("random-quick-btn");
+  if (randomQuickBtn) {
+    randomQuickBtn.addEventListener("click", () => {
+      if (window.oracleController) window.oracleController.triggerRandomDirectly();
     });
   }
+
+
 
   // Chế độ toàn màn hình (Fullscreen)
   const fullscreenBtn = document.getElementById("fullscreen-btn");

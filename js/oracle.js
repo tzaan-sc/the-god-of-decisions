@@ -66,8 +66,8 @@ class OracleController {
     this.isConsulting = false;
     this.timerEl.style.display = "none";
     this.sealBtn.style.pointerEvents = "auto";
-    this.stepTitle.textContent = "Khởi Tâm Thỉnh Cầu";
-    this.stepDesc.textContent = "Hãy nhắm mắt lại, hít một hơi sâu và tập trung tâm trí vào câu hỏi hoặc quyết định bạn đang băn khoăn. Khi đã sẵn sàng, hãy chạm vào Ấn Triện Định Mệnh.";
+    this.stepTitle.textContent = "Khám Phá Thông Điệp Ngẫu Nhiên";
+    this.stepDesc.textContent = "Hãy giữ tâm trí tĩnh lặng và nghĩ về câu hỏi của bạn. Khi đã sẵn sàng, hãy chạm vào Ấn Triện để lật mở một thông điệp ngẫu nhiên từ cuốn sách.";
   }
 
   /**
@@ -79,14 +79,12 @@ class OracleController {
     this.sealBtn.style.pointerEvents = "none";
 
     let count = 3;
-    this.stepTitle.textContent = "Đang Đồng Điệu Với Vị Thần...";
-    this.stepDesc.textContent = "Giữ vững sự tĩnh tại... Lời chỉ dẫn đang tìm đường đến với bạn.";
+    this.stepTitle.textContent = "Đang Tìm Thông Điệp Ngẫu Nhiên...";
+    this.stepDesc.textContent = "Giữ vững sự tĩnh tại... Những trang sách đang xòe ra để chọn thông điệp cho bạn.";
     this.timerEl.style.display = "block";
     this.timerEl.textContent = count;
 
-    if (window.soundEngine) {
-      window.soundEngine.playMysticalChime();
-    }
+
 
     const countdownInterval = setInterval(() => {
       count--;
@@ -104,14 +102,18 @@ class OracleController {
   }
 
   /**
+   * Lật mở trực tiếp một thông điệp ngẫu nhiên ngay lập tức không cần qua đếm ngược
+   */
+  triggerRandomDirectly() {
+    if (this.isConsulting) return;
+    this.executeRiffleAndReveal();
+  }
+
+  /**
    * Đóng modal và thực hiện hiệu ứng xòe sách GSAP rồi dừng ở trang định mệnh
    */
   executeRiffleAndReveal() {
     this.modalEl.classList.remove("active");
-
-    if (window.soundEngine) {
-      window.soundEngine.playPageRiffle(1800);
-    }
 
     // Hiệu ứng rung nhẹ và lắc lốc sách bằng GSAP
     const bookStage = document.querySelector(".book-viewport");
@@ -144,22 +146,17 @@ class OracleController {
       }
 
       setTimeout(() => {
-        // Chuông ngân vang khi trang mở ra
-        if (window.soundEngine) {
-          window.soundEngine.playMysticalChime();
-        }
-
-        // Bắn pháo hoa ánh vàng lấp lánh (Confetti)
+        // Bắn pháo hoa ánh xanh pastel lấp lánh (Confetti)
         if (typeof confetti === "function") {
           confetti({
             particleCount: 70,
             spread: 80,
             origin: { y: 0.6 },
-            colors: ["#d4af37", "#f9e295", "#ffffff", "#78201a"]
+            colors: ["#8ec5fc", "#bbdefb", "#ffffff", "#64b5f6", "#1976d2"]
           });
         }
 
-        this.showToast("✦ Vị thần đã ban lời chỉ dẫn cho bạn!");
+        this.showToast("✦ Đã mở Thông Điệp Ngẫu Nhiên dành cho bạn!");
         this.isConsulting = false;
       }, 900);
     }, 1200);

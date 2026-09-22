@@ -3,26 +3,26 @@
    ========================================================================== */
 
 :root {
-  --bg-dark: #0f0d0b;
-  --table-wood: radial-gradient(circle at center, #241913 0%, #150f0c 60%, #0a0705 100%);
-  --gold-primary: #d4af37;
-  --gold-light: #f9e295;
-  --gold-dark: #8c6d23;
-  --gold-gradient: linear-gradient(135deg, #fce08e 0%, #d4af37 50%, #aa841e 100%);
+  --bg-dark: #070e17;
+  --table-wood: radial-gradient(circle at center, #101c2c 0%, #0a121d 60%, #04070c 100%);
+  --gold-primary: #8ec5fc;
+  --gold-light: #e3f2fd;
+  --gold-dark: #1976d2;
+  --gold-gradient: linear-gradient(135deg, #ffffff 0%, #cbe3fb 35%, #8ec5fc 70%, #1565c0 100%);
   
-  --leather-cover: #1e1410;
-  --leather-back: #18100c;
-  --paper-cream: #f4eedb;
-  --paper-edge: #d8cbb0;
-  --ink-dark: #2b231d;
-  --ink-muted: #5e5247;
-  --ink-accent: #78201a;
+  --leather-cover: #102136;
+  --leather-back: #0b1726;
+  --paper-cream: #f4f9ff;
+  --paper-edge: #bbdefb;
+  --ink-dark: #0d2038;
+  --ink-muted: #4b6685;
+  --ink-accent: #1976d2;
   
   --font-serif-title: "Playfair Display", "EB Garamond", Georgia, serif;
   --font-serif-body: "Lora", "EB Garamond", Georgia, serif;
   --font-sans: "Montserrat", -apple-system, BlinkMacSystemFont, sans-serif;
   
-  --candle-glow: rgba(255, 170, 50, 0.15);
+  --candle-glow: rgba(142, 197, 252, 0.2);
   --candle-flicker-x: 0px;
   --candle-flicker-y: 0px;
 }
@@ -55,15 +55,15 @@ body {
   pointer-events: none;
   background: radial-gradient(
     circle at calc(50% + var(--candle-flicker-x, 0px)) calc(35% + var(--candle-flicker-y, 0px)),
-    rgba(255, 185, 75, 0.18) 0%,
-    rgba(220, 130, 30, 0.08) 45%,
-    rgba(0, 0, 0, 0.75) 90%
+    rgba(142, 197, 252, 0.22) 0%,
+    rgba(30, 136, 229, 0.12) 45%,
+    rgba(4, 8, 14, 0.9) 90%
   );
   transition: opacity 0.5s ease;
   z-index: 1;
 }
 
-/* Hạt bụi ánh vàng lơ lửng trong không gian */
+/* Hạt bụi ánh sao xanh pastel lơ lửng trong không gian */
 .magic-particles {
   position: absolute;
   inset: 0;
@@ -76,17 +76,17 @@ body {
   position: absolute;
   width: 3px;
   height: 3px;
-  background: var(--gold-light);
+  background: #e3f2fd;
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--gold-primary);
+  box-shadow: 0 0 10px #8ec5fc, 0 0 16px #64b5f6;
   opacity: 0;
   animation: floatUp 8s infinite linear;
 }
 
 @keyframes floatUp {
   0% { transform: translateY(100vh) scale(0.3); opacity: 0; }
-  30% { opacity: 0.6; }
-  80% { opacity: 0.8; }
+  30% { opacity: 0.7; }
+  80% { opacity: 0.9; }
   100% { transform: translateY(-10vh) scale(1); opacity: 0; }
 }
 
@@ -114,7 +114,7 @@ body {
   width: 28px;
   height: 28px;
   fill: var(--gold-primary);
-  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.6));
+  filter: drop-shadow(0 0 8px rgba(142, 197, 252, 0.7));
 }
 
 .brand-title {
@@ -135,8 +135,8 @@ body {
 }
 
 .action-btn {
-  background: rgba(30, 20, 16, 0.6);
-  border: 1px solid rgba(212, 175, 55, 0.35);
+  background: rgba(16, 33, 54, 0.65);
+  border: 1px solid rgba(142, 197, 252, 0.4);
   color: var(--gold-light);
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -153,9 +153,9 @@ body {
 }
 
 .action-btn:hover {
-  background: rgba(212, 175, 55, 0.2);
+  background: rgba(142, 197, 252, 0.22);
   border-color: var(--gold-primary);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 15px rgba(142, 197, 252, 0.45);
   transform: translateY(-2px);
   color: #fff;
 }
@@ -168,21 +168,21 @@ body {
 }
 
 .btn-oracle {
-  background: linear-gradient(135deg, #78201a 0%, #3e100d 100%);
+  background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%);
   border-color: var(--gold-primary);
   color: #fff;
-  box-shadow: 0 0 18px rgba(120, 32, 26, 0.6);
+  box-shadow: 0 0 20px rgba(30, 136, 229, 0.6);
   animation: pulseOracle 3s infinite ease-in-out;
 }
 
 .btn-oracle:hover {
-  background: linear-gradient(135deg, #992820 0%, #521511 100%);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
+  background: linear-gradient(135deg, #2196f3 0%, #1565c0 100%);
+  box-shadow: 0 0 28px rgba(142, 197, 252, 0.85);
 }
 
 @keyframes pulseOracle {
-  0%, 100% { box-shadow: 0 0 15px rgba(120, 32, 26, 0.6); }
-  50% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.6); }
+  0%, 100% { box-shadow: 0 0 18px rgba(30, 136, 229, 0.6); }
+  50% { box-shadow: 0 0 28px rgba(142, 197, 252, 0.7); }
 }
 
 /* ==========================================================================
@@ -323,7 +323,7 @@ body {
 .oracle-modal {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(35, 15, 12, 0.95) 0%, rgba(10, 6, 5, 0.98) 100%);
+  background: radial-gradient(circle at center, rgba(14, 28, 48, 0.96) 0%, rgba(4, 8, 14, 0.98) 100%);
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -353,9 +353,9 @@ body {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: radial-gradient(circle, #78201a 0%, #3a0d09 100%);
+  background: radial-gradient(circle, #1976d2 0%, #0a1f36 100%);
   border: 2px solid var(--gold-primary);
-  box-shadow: 0 0 35px rgba(212, 175, 55, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 35px rgba(142, 197, 252, 0.6), inset 0 0 20px rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -366,14 +366,14 @@ body {
 
 .oracle-seal-btn:hover {
   transform: scale(1.1) rotate(45deg);
-  box-shadow: 0 0 50px rgba(212, 175, 55, 0.9);
+  box-shadow: 0 0 50px rgba(142, 197, 252, 0.95);
 }
 
 .oracle-seal-btn svg {
   width: 60px;
   height: 60px;
   fill: var(--gold-primary);
-  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.8));
+  filter: drop-shadow(0 0 8px rgba(142, 197, 252, 0.8));
 }
 
 .oracle-step-title {
@@ -386,7 +386,7 @@ body {
 
 .oracle-step-desc {
   font-size: 1.15rem;
-  color: rgba(244, 238, 219, 0.8);
+  color: rgba(227, 242, 253, 0.85);
   line-height: 1.6;
   margin-bottom: 2rem;
 }
@@ -405,7 +405,7 @@ body {
   right: 2rem;
   background: none;
   border: none;
-  color: rgba(244, 238, 219, 0.6);
+  color: rgba(227, 242, 253, 0.6);
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -420,7 +420,7 @@ body {
 .quote-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(4, 8, 14, 0.88);
   backdrop-filter: blur(10px);
   z-index: 120;
   display: flex;
@@ -447,12 +447,12 @@ body {
 }
 
 .quote-render-target {
-  background: #fdfbf7;
-  color: #2b231d;
+  background: #f4f9ff;
+  color: #0d2038;
   padding: 2.5rem 2rem;
   border-radius: 8px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-  border: 8px solid #3d2c20;
+  border: 8px solid #102640;
   position: relative;
   text-align: center;
   width: 100%;
@@ -461,20 +461,20 @@ body {
 .quote-card-border {
   position: absolute;
   inset: 6px;
-  border: 1px solid #c8ab6b;
+  border: 1px solid #8ec5fc;
   pointer-events: none;
 }
 
 .quote-card-rune {
   font-size: 2.5rem;
-  color: #78201a;
+  color: #1976d2;
   margin-bottom: 0.5rem;
 }
 
 .quote-card-title {
   font-family: var(--font-serif-title);
   font-size: 1.25rem;
-  color: #78201a;
+  color: #1976d2;
   letter-spacing: 1px;
   margin-bottom: 1rem;
   text-transform: uppercase;
